@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { color, radius, spacing } from "../theme";
-import { Pressable, Text, View } from "react-native";
 import { scheduleOnRN } from "react-native-worklets";
 import AlertIcon from "../../assets/icons/AlertIcon";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 
 export default ({ message = "", duration = 10000, isVisible = false, onClose = () => { } }) => {
@@ -60,9 +60,8 @@ export default ({ message = "", duration = 10000, isVisible = false, onClose = (
         <Animated.View
             style={
                 [
+                    styles.container,
                     {
-                        zIndex: 1000,
-                        position: "absolute",
                         top: spacing.m + insets.top,
                         left: spacing.m + insets.left,
                         right: spacing.m + insets.right,
@@ -74,26 +73,12 @@ export default ({ message = "", duration = 10000, isVisible = false, onClose = (
 
             <View
                 style={
-                    {
-                        gap: spacing.s,
-                        padding: spacing.s,
-                        alignItems: "center",
-                        flexDirection: "row",
-                        borderRadius: radius.m,
-                        backgroundColor: color.yellowTransparent80,
-                    }
+                    styles.body
                 }
             >
                 <View
                     style={
-                        {
-                            width: 40,
-                            height: 40,
-                            alignItems: "center",
-                            borderRadius: radius.s,
-                            justifyContent: "center",
-                            backgroundColor: color.whiteTransparent20,
-                        }
+                        styles.alertIcon
                     }
                 >
                     <AlertIcon
@@ -105,21 +90,16 @@ export default ({ message = "", duration = 10000, isVisible = false, onClose = (
 
                 <Text
                     style={
-                        {
-                            flex: 1,
-                            color: color.white,
-                        }
+                        styles.messageLabel
                     }
                 >
                     {message}
                 </Text>
 
-                <Pressable
+                <TouchableOpacity
                     onPress={hide}
                     style={
-                        {
-                            alignSelf: "flex-start"
-                        }
+                        styles.closeIcon
                     }
                 >
                     <CloseIcon
@@ -127,8 +107,38 @@ export default ({ message = "", duration = 10000, isVisible = false, onClose = (
                             color.whiteTransparent60
                         }
                     />
-                </Pressable>
+                </TouchableOpacity>
             </View>
         </Animated.View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        zIndex: 1000,
+        position: "absolute",
+    },
+    body: {
+        gap: spacing.s,
+        padding: spacing.s,
+        alignItems: "center",
+        flexDirection: "row",
+        borderRadius: radius.m,
+        backgroundColor: color.yellowTransparent80,
+    },
+    alertIcon: {
+        width: 40,
+        height: 40,
+        alignItems: "center",
+        borderRadius: radius.s,
+        justifyContent: "center",
+        backgroundColor: color.whiteTransparent20,
+    },
+    closeIcon: {
+        alignSelf: "flex-start",
+    },
+    messageLabel: {
+        flex: 1,
+        color: color.white,
+    }
+});

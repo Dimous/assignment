@@ -4,6 +4,7 @@ import SupportButton from "../components/SupportButton";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import ParkingCard from "../components/ParkingCard";
 
 export default () => {
     const insets = useSafeAreaInsets();
@@ -41,7 +42,8 @@ export default () => {
             <ScrollView
                 contentContainerStyle={
                     {
-                        paddingTop: 100,
+                        gap: spacing.m,
+                        paddingTop: 90,
                         padding: spacing.m,
                     }
                 }
@@ -69,6 +71,21 @@ export default () => {
                         }
                     />
                 </View>
+
+                <ParkingCard
+                    till="20:00"
+                    plate="X 125 BY 125"
+                    duration="13 минут"
+                    onPressPark={
+                        () => Alert.alert("парковаться")
+                    }
+                    onPressScan={
+                        () => Alert.alert("сканировать")
+                    }
+                    onPressGoToList={
+                        () => Alert.alert("переход в список парковок")
+                    }
+                />
             </ScrollView>
         </View>
     );

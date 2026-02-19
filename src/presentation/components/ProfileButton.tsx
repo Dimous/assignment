@@ -1,48 +1,59 @@
 import { radius, spacing, color } from "../theme";
-import { Pressable, Text, View } from "react-native";
 import PersonIcon from "../../assets/icons/PersonIcon";
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 
 export default ({ name = "", onPress = () => { } }) => (
-    <Pressable
+    <TouchableOpacity
         onPress={
             onPress
         }
         style={
-            {
-                padding: spacing.s,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: radius.round,
-                backgroundColor: color.whiteTransparent20,
-            }
+            styles.body
         }
     >
         <View
             style={
-                {
-                    width: 40,
-                    height: 40,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: radius.round,
-                    backgroundColor: color.white,
-                }
+                styles.icon
             }
         >
-            <PersonIcon />
+            <PersonIcon
+                color={
+                    color.black
+                }
+            />
         </View>
 
         <Text
             style={
-                {
-                    fontSize: 16,
-                    fontWeight: 500,
-                    marginHorizontal: spacing.s,
-                }
+                styles.nameLabel
             }
         >
             {name}
         </Text>
-    </Pressable>
+    </TouchableOpacity>
 );
+
+const styles = StyleSheet.create({
+    nameLabel: {
+        fontSize: 16,
+        fontWeight: 500,
+        color: color.black,
+        marginHorizontal: spacing.s,
+    },
+    icon: {
+        width: 40,
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: radius.round,
+        backgroundColor: color.white,
+    },
+    body: {
+        padding: spacing.s,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: radius.round,
+        backgroundColor: color.whiteTransparent20,
+    },
+});

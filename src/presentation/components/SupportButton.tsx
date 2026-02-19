@@ -1,23 +1,31 @@
-import { Pressable } from "react-native";
 import { radius, color } from "../theme";
 import SupportIcon from "../../assets/icons/SupportIcon";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 export default ({ onPress = () => { } }) => (
-    <Pressable
+    <TouchableOpacity
         onPress={
             onPress
         }
         style={
-            {
-                width: 40,
-                height: 40,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: radius.round,
-                backgroundColor: color.whiteTransparent20,
-            }
+            styles.body
         }
     >
-        <SupportIcon />
-    </Pressable>
+        <SupportIcon
+            color={
+                color.black
+            }
+        />
+    </TouchableOpacity>
 );
+
+const styles = StyleSheet.create({
+    body: {
+        width: 40,
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: radius.round,
+        backgroundColor: color.whiteTransparent20,
+    }
+});
