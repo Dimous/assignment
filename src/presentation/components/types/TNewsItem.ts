@@ -1,0 +1,1 @@
+export type TNewsItem = { id: string, title: string, time: Date, image: string };

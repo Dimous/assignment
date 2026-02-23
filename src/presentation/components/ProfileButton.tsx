@@ -1,36 +1,41 @@
+import { memo } from "react";
+import { isEqual } from "@ver0/deep-equal";
 import { radius, spacing, color } from "../theme";
 import PersonIcon from "../../assets/icons/PersonIcon";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 
-export default ({ name = "", onPress = () => { } }) => (
-    <TouchableOpacity
-        onPress={
-            onPress
-        }
-        style={
-            styles.body
-        }
-    >
-        <View
+export default memo(
+    ({ name, onPress }: { name?: string, onPress?: () => void }) => (
+        <TouchableOpacity
+            onPress={
+                onPress
+            }
             style={
-                styles.icon
+                styles.body
             }
         >
-            <PersonIcon
-                color={
-                    color.black
+            <View
+                style={
+                    styles.icon
                 }
-            />
-        </View>
+            >
+                <PersonIcon
+                    color={
+                        color.black
+                    }
+                />
+            </View>
 
-        <Text
-            style={
-                styles.nameLabel
-            }
-        >
-            {name}
-        </Text>
-    </TouchableOpacity>
+            <Text
+                style={
+                    styles.nameLabel
+                }
+            >
+                {name}
+            </Text>
+        </TouchableOpacity>
+    ),
+    isEqual
 );
 
 const styles = StyleSheet.create({

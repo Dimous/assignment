@@ -1,5 +1,4 @@
-import { color } from "../theme"
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default () => {
@@ -9,9 +8,7 @@ export default () => {
         <View
             style={
                 [
-                    {
-                        flex: 1,
-                    },
+                    styles.container,
                     {
                         paddingTop: insets.top,
                         paddingLeft: insets.left,
@@ -21,7 +18,13 @@ export default () => {
                 ]
             }
         >
-            <Text style={{ color: color.black }}>История парковок</Text>
+            <Text >История парковок</Text>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

@@ -1,179 +1,195 @@
+import { memo, useCallback } from "react";
+import { isEqual } from "@ver0/deep-equal";
+import BaseIconButton from "./BaseIconButton";
 import CarIcon from "../../assets/icons/CarIcon";
 import { radius, spacing, color } from "../theme";
-import GenericIconButton from "./GenericIconButton";
-import ScanerIcon from "../../assets/icons/ScanerIcon";
+import ScannerIcon from "../../assets/icons/ScannerIcon";
 import ChevronIcon from "../../assets/icons/ChevronIcon";
 import ParkingIcon from "../../assets/icons/ParkingIcon";
 import LinearGradient from "react-native-linear-gradient";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 
-export default ({ till = "", plate = "", duration = "", onPressPark = () => { }, onPressScan = () => { }, onPressGoToList = () => { } }) => (
-    <LinearGradient
-        style={
-            styles.border
-        }
-        colors={
-            [color.secondary + "33", color.primary + "33"]
-        }
-    >
-        <View
-            style={
-                styles.wrapper
-            }
-        >
-            <View
+export default memo(
+    ({ till, plate, duration, onPressPark, onPressScan, onPressGoToList }: { till?: string, plate?: string, duration?: string, onPressPark?: () => void, onPressScan?: () => void, onPressGoToList?: () => void }) => {
+        const renderParkingIcon = useCallback(
+            () => <ParkingIcon
+                size={16}
+                color={
+                    color.white
+                }
+            />,
+            []
+        );
+        const renderScannerIcon = useCallback(
+            () => <ScannerIcon />,
+            []
+        );
+
+        return (
+            <LinearGradient
                 style={
-                    styles.block1
+                    styles.border
+                }
+                colors={
+                    [color.secondary + "33", color.primary + "33"]
                 }
             >
-                <Text
+                <View
                     style={
-                        styles.titleLabel
-                    }
-                >Мои парковки</Text>
-
-                <TouchableOpacity
-                    onPress={
-                        onPressGoToList
+                        styles.wrapper
                     }
                 >
-                    <ChevronIcon
-                        color={
-                            color.hardGrey
-                        }
-                    />
-                </TouchableOpacity>
-            </View>
-
-            <View
-                style={
-                    styles.block2
-                }
-            >
-                <LinearGradient
-                    end={
-                        { x: 0, y: 0.5 }
-                    }
-                    start={
-                        { x: 1, y: 0.5 }
-                    }
-                    colors={
-                        [color.primary + "66", color.white + "09"]
-                    }
-                    style={
-                        styles.plateBorder
-                    }
-                >
-                    <LinearGradient
-                        end={
-                            { x: 0, y: 0.5 }
-                        }
-                        start={
-                            { x: 1, y: 0.5 }
-                        }
-                        colors={
-                            [color.secondaryPressed, color.secondary]
-                        }
+                    <View
                         style={
-                            styles.plateWrapper
+                            styles.block1
                         }
                     >
-                        <View
+                        <Text
                             style={
-                                styles.plateBody
+                                styles.titleLabel
+                            }
+                        >Мои парковки</Text>
+
+                        <TouchableOpacity
+                            onPress={
+                                onPressGoToList
                             }
                         >
-                            <CarIcon
+                            <ChevronIcon
                                 color={
-                                    color.black
+                                    color.hardGrey
                                 }
                             />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View
+                        style={
+                            styles.block2
+                        }
+                    >
+                        <LinearGradient
+                            end={
+                                { x: 0, y: 0.5 }
+                            }
+                            start={
+                                { x: 1, y: 0.5 }
+                            }
+                            style={
+                                styles.plateBorder
+                            }
+                            colors={
+                                [color.primary + "66", color.white + "09"]
+                            }
+                        >
+                            <LinearGradient
+                                end={
+                                    { x: 0, y: 0.5 }
+                                }
+                                start={
+                                    { x: 1, y: 0.5 }
+                                }
+                                style={
+                                    styles.plateWrapper
+                                }
+                                colors={
+                                    [color.secondaryPressed, color.secondary]
+                                }
+                            >
+                                <View
+                                    style={
+                                        styles.plateBody
+                                    }
+                                >
+                                    <CarIcon
+                                        color={
+                                            color.black
+                                        }
+                                    />
+
+                                    <Text
+                                        style={
+                                            styles.plateLabel
+                                        }
+                                    >
+                                        {plate}
+                                    </Text>
+                                </View>
+                            </LinearGradient>
+                        </LinearGradient>
+
+                        <View
+                            style={
+                                styles.timerBody
+                            }
+                        >
+                            <Text
+                                style={
+                                    styles.timerDurationLabel
+                                }
+                            >
+                                {duration}
+                            </Text>
 
                             <Text
                                 style={
-                                    styles.plateLabel
+                                    styles.timerTillLabel
                                 }
-                            >
-                                {plate}
-                            </Text>
+                            >до {till}</Text>
                         </View>
-                    </LinearGradient>
-                </LinearGradient>
+                    </View>
 
-                <View
-                    style={
-                        styles.timerBody
-                    }
-                >
-                    <Text
+                    <View
                         style={
-                            styles.timerDurationLabel
+                            styles.block3
                         }
                     >
-                        {duration}
-                    </Text>
-
-                    <Text
-                        style={
-                            styles.timerTillLabel
-                        }
-                    >до {till}</Text>
-                </View>
-            </View>
-
-            <View
-                style={
-                    styles.block3
-                }
-            >
-                <GenericIconButton
-                    style={
-                        styles.button
-                    }
-                    bodyStyle={
-                        styles.buttonBody
-                    }
-                    labelStyle={
-                        styles.parkButtonLabel
-                    }
-                    wrapperStyle={
-                        styles.parkButtonWrapper
-                    }
-                    borderColors={
-                        [color.black, color.black]
-                    }
-                    label="Парковаться"
-                    renderIcon={
-                        () => <ParkingIcon
-                            size={16}
-                            color={
-                                color.white
+                        <BaseIconButton
+                            label="Парковаться"
+                            onPress={
+                                onPressPark
+                            }
+                            renderIcon={
+                                renderParkingIcon
+                            }
+                            style={
+                                styles.button
+                            }
+                            bodyStyle={
+                                styles.buttonBody
+                            }
+                            labelStyle={
+                                styles.parkButtonLabel
+                            }
+                            wrapperStyle={
+                                styles.parkButtonWrapper
+                            }
+                            borderColors={
+                                [color.black, color.black]
                             }
                         />
-                    }
-                    onPress={
-                        onPressPark
-                    }
-                />
 
-                <GenericIconButton
-                    style={
-                        styles.button
-                    }
-                    bodyStyle={
-                        styles.buttonBody
-                    }
-                    label="Сканировать талон"
-                    renderIcon={
-                        () => <ScanerIcon />
-                    }
-                    onPress={
-                        onPressScan
-                    }
-                />
-            </View>
-        </View>
-    </LinearGradient>
+                        <BaseIconButton
+                            label="Сканировать талон"
+                            onPress={
+                                onPressScan
+                            }
+                            renderIcon={
+                                renderScannerIcon
+                            }
+                            style={
+                                styles.button
+                            }
+                            bodyStyle={
+                                styles.buttonBody
+                            }
+                        />
+                    </View>
+                </View>
+            </LinearGradient>
+        );
+    },
+    isEqual
 );
 
 const styles = StyleSheet.create({

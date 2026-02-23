@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
+import { isEqual } from "@ver0/deep-equal";
 import { color, radius, spacing } from "../theme";
 import { scheduleOnRN } from "react-native-worklets";
 import AlertIcon from "../../assets/icons/AlertIcon";
@@ -7,111 +8,116 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 
-export default ({ message = "", duration = 10000, isVisible = false, onClose = () => { } }) => {
-    const opacity = useSharedValue(0);
-    const insets = useSafeAreaInsets();
-    const scale = useSharedValue(0.96);
-    const translateY = useSharedValue(-160);
-    const animatedStyle = useAnimatedStyle(
-        () => ({
-            opacity: opacity.value,
-            transform: [
-                { scale: scale.value },
-                { translateY: translateY.value },
-            ],
-        })
-    );
-    const hide = () => {
-        opacity.value = withTiming(0, { duration: 200 });
-        scale.value = withTiming(0.96, { duration: 200 });
-        translateY.value = withTiming(-160, { duration: 250 }, isFinished => {
-            if (isFinished) {
-                scheduleOnRN(onClose);
-            }
-        });
-    };
+export default memo(
+    ({ message, duration = 10000, isVisible = false, onClose }: { message?: string, duration?: number, isVisible?: boolean, onClose?: () => void }) => {
+        const opacity = useSharedValue(0);
+        const insets = useSafeAreaInsets();
+        const scale = useSharedValue(0.96);
+        const translateY = useSharedValue(-160);
+        const animatedStyle = useAnimatedStyle(
+            () => ({
+                opacity: opacity.value,
+                transform: [
+                    { scale: scale.value },
+                    { translateY: translateY.value },
+                ],
+            })
+        );
+        const onTimeout = () => {
+            opacity.value = withTiming(0, { duration: 200 });
+            scale.value = withTiming(0.96, { duration: 200 });
+            translateY.value = withTiming(-160, { duration: 250 }, isFinished => {
+                if (onClose && isFinished) {
+                    scheduleOnRN(onClose);
+                }
+            });
+        };
 
-    useEffect(
-        () => {
-            if (isVisible) {
-                const timer = setTimeout(hide, duration);
+        useEffect(
+            () => {
+                if (isVisible) {
+                    const timer = setTimeout(onTimeout, duration);
 
-                scale.value = withTiming(1, {
-                    duration: 250,
-                });
-                opacity.value = withTiming(1, {
-                    duration: 250,
-                });
-                translateY.value = withSpring(0, {
-                    damping: 18,
-                    stiffness: 180,
-                });
+                    scale.value = withTiming(1, {
+                        duration: 250,
+                    });
+                    opacity.value = withTiming(1, {
+                        duration: 250,
+                    });
+                    translateY.value = withSpring(0, {
+                        damping: 18,
+                        stiffness: 180,
+                    });
 
-                return () => clearTimeout(timer);
-            }
-        },
-        [
-            hide,
-            isVisible,
-        ]
-    );
+                    return () => clearTimeout(timer);
+                }
+            },
+            [
+                onTimeout,
+                isVisible,
+            ]
+        );
 
-    return isVisible && (
-        <Animated.View
-            style={
-                [
-                    styles.container,
-                    {
-                        top: spacing.m + insets.top,
-                        left: spacing.m + insets.left,
-                        right: spacing.m + insets.right,
-                    },
-                    animatedStyle,
-                ]
-            }
-        >
-
-            <View
+        return isVisible && (
+            <Animated.View
                 style={
-                    styles.body
+                    [
+                        styles.container,
+                        {
+                            top: spacing.m + insets.top,
+                            left: spacing.m + insets.left,
+                            right: spacing.m + insets.right,
+                        },
+                        animatedStyle,
+                    ]
                 }
             >
+
                 <View
                     style={
-                        styles.alertIcon
+                        styles.body
                     }
                 >
-                    <AlertIcon
-                        color={
-                            color.white
+                    <View
+                        style={
+                            styles.alertIcon
                         }
-                    />
+                    >
+                        <AlertIcon
+                            color={
+                                color.white
+                            }
+                        />
+                    </View>
+
+                    <Text
+                        style={
+                            styles.messageLabel
+                        }
+                    >
+                        {message}
+                    </Text>
+
+                    <TouchableOpacity
+                        onPress={
+                            onTimeout
+                        }
+                        style={
+                            styles.closeIcon
+                        }
+                    >
+                        <CloseIcon
+                            color={
+                                color.whiteTransparent60
+                            }
+                        />
+                    </TouchableOpacity>
                 </View>
-
-                <Text
-                    style={
-                        styles.messageLabel
-                    }
-                >
-                    {message}
-                </Text>
-
-                <TouchableOpacity
-                    onPress={hide}
-                    style={
-                        styles.closeIcon
-                    }
-                >
-                    <CloseIcon
-                        color={
-                            color.whiteTransparent60
-                        }
-                    />
-                </TouchableOpacity>
-            </View>
-        </Animated.View>
-    );
-};
+            </Animated.View>
+        );
+    },
+    isEqual
+);
 
 const styles = StyleSheet.create({
     container: {
