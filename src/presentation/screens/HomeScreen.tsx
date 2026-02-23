@@ -8,13 +8,13 @@ import ProfileButton from "../components/ProfileButton";
 import SupportButton from "../components/SupportButton";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
+import BaseIconButton from "../components/BaseIconButton";
+import SchedulePicker from "../components/SchedulePicker";
 import TestBottomSheet from "../components/TestBottomSheet";
-import { TNavigatorParamList } from "../navigation/TNavigatorParamList";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import BaseIconButton from "../components/BaseIconButton";
-import SchedulePicker from "../components/SchedulePicker";
+import { type TNavigatorParamList } from "../navigation/TNavigatorParamList";
 
 export default () => {
     const insets = useSafeAreaInsets();
