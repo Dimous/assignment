@@ -23,7 +23,7 @@ export default memo(
                             const isSelected = selected.includes(index);
                             const onPress = useCallback(
                                 () => {
-                                    onToggle(isSelected ? selected.filter((_, selectedIndex) => index !== selectedIndex) : [...selected, index]);
+                                    onToggle(isSelected ? selected.filter((selectedIndex) => index !== selectedIndex) : selected.concat(index));
                                 },
                                 [
                                     index,
