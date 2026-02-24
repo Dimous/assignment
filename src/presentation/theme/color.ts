@@ -1,3 +1,9 @@
+/**
+ * вообще, нужно создавать дизайн-систему
+ * для навигации есть -- https://reactnavigation.org/docs/themes
+ * нужно создать для остальной части приложения, но расширяя навигационную
+ * useTheme уже занято темой навигации, пусть будет useApplicationTheme со своим набором токенов: color, spacing, radius, typography, elevation
+ */
 export const color = {
     black: "#132351",
     white: "#ffffff",
