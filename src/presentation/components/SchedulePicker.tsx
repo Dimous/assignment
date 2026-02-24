@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         padding: spacing.s,
         flexDirection: "row",
         borderRadius: radius.m,
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         backgroundColor: color.secondary,
     },
     interval: {
