@@ -13,7 +13,6 @@ export default () => {
                         paddingTop: insets.top,
                         paddingLeft: insets.left,
                         paddingRight: insets.right,
-                        paddingBottom: insets.bottom,
                     }
                 ]
             }
